@@ -1,0 +1,12 @@
+---
+- hosts: webserver1
+  gather_facts: true
+  roles:
+          - users
+          - http
+
+- hosts: webserver2
+  gather_facts: true
+  roles:
+          - users
+          - php
