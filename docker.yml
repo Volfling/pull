@@ -1,0 +1,33 @@
+---
+- hosts: localhost
+  gather_facts: true
+  tasks:
+          - name: install packages
+            apt:
+                    pkg:
+                            - apt-transport-https
+                            - ca-certificates
+                            - curl
+                    state: latest
+                    update_cache: true
+          - name: add key
+            apt_key: 
+                    url: https://download.docker.com/linux/ubuntu/gpg
+                    state: present
+
+          - name: add docker repository
+            apt_repository:
+                    repo: deb https://download.docker.com/linux/ubuntu focal stable
+                    state: present
+          - name: docker-ce
+            apt:
+                    name: docker-ce
+                    state: latest
+                    update_cache: true
+          - name: install docker
+            pip:
+                    name: docker
+          - name: start docker
+            service:
+                    name: docker
+                    state: started

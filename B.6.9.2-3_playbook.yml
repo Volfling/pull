@@ -1,0 +1,5 @@
+---
+- hosts: localhost
+  gather_facts: true
+  roles:
+          - B.6.9.2-3

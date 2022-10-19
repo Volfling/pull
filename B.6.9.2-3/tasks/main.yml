@@ -1,0 +1,50 @@
+---
+# tasks file for B.6.9.2-3
+- name: install nginx
+  apt:
+          name: nginx
+          state: present
+          update_cache: yes
+
+- name: install php-fpm
+  apt:
+          name: php-fpm
+          state: present
+          update_cache: yes
+
+- name: access to tcp port 80
+  ufw:
+          rule: allow
+          port: '80'
+          proto: tcp
+
+- name: update fpm conf
+  ansible.builtin.lineinfile:
+          dest: /etc/php/{{ php_version }}/fpm/pool.d/www.conf
+          regexp: "^listen ="
+          line: "listen = {{ tcp_socket | default(unix_socket) }}"
+  notify: restart php-fpm
+
+- name: copy website files to doc.root
+  copy:
+          src: files/index.php
+          dest: "{{ nginx_document_root }}"
+          mode: preserve
+
+- name: apply nginx template
+  template:
+          src: templates/nginx.conf.j2
+          dest: /etc/nginx/sites-available/default
+  notify: restart nginx
+
+- name: eneble new site
+  file:
+          src: /etc/nginx/sites-available/default
+          dest: /etc/nginx/sites-enabled/default
+          state: link
+  notify: restart nginx
+
+- name: nginx run
+  ansible.builtin.sysvinit:
+          name: nginx
+          state: started

@@ -1,0 +1,6 @@
+---
+- hosts: localhost
+  gather_facts: true
+  roles:
+          - role: "B.6.9.2-3"
+            nginx_document_root: /opt/nginx/ansible/

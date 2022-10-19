@@ -1,0 +1,7 @@
+---
+# handlers file for dnsmasq
+
+- name: restart_dnsmasq
+  ansible.builtin.sysvinit:
+          name: dnsmasq
+          state: restarted

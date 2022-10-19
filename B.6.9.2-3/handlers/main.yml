@@ -1,0 +1,11 @@
+---
+# handlers file for B.6.9.2-3
+- name: restart php-fpm
+  ansible.builtin.sysvinit:
+          name: "php{{ php_version }}-fpm"
+          state: restarted
+
+- name: restart nginx
+  ansible.builtin.sysvinit:
+          name: nginx
+          state: restarted

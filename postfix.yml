@@ -1,0 +1,26 @@
+---
+- hosts: localhost
+  gather_facts: true
+  tasks:
+          - name: install postfix
+            apt:
+                    name: postfix
+                    state: latest
+                    update_cache: true
+            tags:
+                    - init_postfix
+
+          - name: start postfix
+            ansible.builtin.sysvinit:
+                    name: postfix
+                    state: started
+            tags:
+                    - init_postfix
+
+          - name: delete postfix
+            apt:
+                    autoclean: yes
+                    name: postfix
+                    state: absent
+            tags:
+                    - drop_postfix

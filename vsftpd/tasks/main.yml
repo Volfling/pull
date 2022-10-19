@@ -1,0 +1,11 @@
+---
+# tasks file for vsftpd
+- name: install vsftpd
+  apt:
+          name: vsftpd
+          state: present
+- name: start vsftpd
+  ansible.builtin.sysvinit:
+          name: vsftpd
+          state: started
+
